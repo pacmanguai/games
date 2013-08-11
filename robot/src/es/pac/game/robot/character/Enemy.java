@@ -1,45 +1,47 @@
 package es.pac.game.robot.character;
 
+import java.awt.Rectangle;
+
 import es.pac.game.robot.Background;
 import es.pac.game.robot.StartingClass;
 
 public class Enemy {
 
-    private int maxHealth;
-    private int currentHealth;
     private int power;
     private int speedX;
     private int centerX;
     private int centerY;
 
     private final Background bg = StartingClass.getBg1();
+    
+    public int health = 5;
+    
+    public Rectangle r = new Rectangle(0,0,0,0);
 
     // Behavioral Methods
     public void update() {
         centerX += speedX;
         speedX = bg.getSpeedX() * 5;
+        
+        r.setBounds(centerX - 25, centerY-25, 50, 60);
+		
+		if (r.intersects(Robot.yellowRed)){
+			checkCollision();
+		}
     }
+    
+    private void checkCollision() {
+		if (r.intersects(Robot.rect) || r.intersects(Robot.rect2) || r.intersects(Robot.rect3) || r.intersects(Robot.rect4)){
+			System.out.println("collision");
+			
+			}
+		}
+
 
     public void die() {
     }
 
     public void attack() {
-    }
-
-    public int getMaxHealth() {
-        return maxHealth;
-    }
-
-    public void setMaxHealth(int maxHealth) {
-        this.maxHealth = maxHealth;
-    }
-
-    public int getCurrentHealth() {
-        return currentHealth;
-    }
-
-    public void setCurrentHealth(int currentHealth) {
-        this.currentHealth = currentHealth;
     }
 
     public int getPower() {
