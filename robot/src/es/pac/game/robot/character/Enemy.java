@@ -13,30 +13,55 @@ public class Enemy {
     private int centerY;
 
     private final Background bg = StartingClass.getBg1();
-    
+    private final Robot robot = StartingClass.getRobot();
+
+    private int movementSpeed;
+
     public int health = 5;
-    
-    public Rectangle r = new Rectangle(0,0,0,0);
+
+    public Rectangle r = new Rectangle(0, 0, 0, 0);
 
     // Behavioral Methods
     public void update() {
+        follow();
         centerX += speedX;
-        speedX = bg.getSpeedX() * 5;
-        
-        r.setBounds(centerX - 25, centerY-25, 50, 60);
-		
-		if (r.intersects(Robot.yellowRed)){
-			checkCollision();
-		}
-    }
-    
-    private void checkCollision() {
-		if (r.intersects(Robot.rect) || r.intersects(Robot.rect2) || r.intersects(Robot.rect3) || r.intersects(Robot.rect4)){
-			System.out.println("collision");
-			
-			}
-		}
+        speedX = bg.getSpeedX() * 5 + movementSpeed;
 
+        r.setBounds(centerX - 25, centerY - 25, 50, 60);
+
+        if (r.intersects(Robot.yellowRed)) {
+            checkCollision();
+        }
+    }
+
+    public void follow() {
+
+        if (centerX < -95 || centerX > 810) {
+            movementSpeed = 0;
+        }
+
+        else if (Math.abs(robot.getCenterX() - centerX) < 5) {
+            movementSpeed = 0;
+        }
+
+        else {
+
+            if (robot.getCenterX() >= centerX) {
+                movementSpeed = 1;
+            } else {
+                movementSpeed = -1;
+            }
+        }
+
+    }
+
+    private void checkCollision() {
+        if (r.intersects(Robot.rect) || r.intersects(Robot.rect2) || r.intersects(Robot.rect3)
+                || r.intersects(Robot.rect4)) {
+            System.out.println("collision");
+
+        }
+    }
 
     public void die() {
     }
