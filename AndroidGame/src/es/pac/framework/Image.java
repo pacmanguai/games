@@ -1,5 +1,7 @@
 package es.pac.framework;
 
+import es.pac.framework.Graphics.ImageFormat;
+
 public interface Image {
 	public int getWidth();
 
