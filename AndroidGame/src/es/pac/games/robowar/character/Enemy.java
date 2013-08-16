@@ -3,12 +3,13 @@ package es.pac.games.robowar.character;
 import java.util.ArrayList;
 
 import android.graphics.Rect;
+import es.pac.games.framework.Graphics;
 import es.pac.games.robowar.Background;
 import es.pac.games.robowar.misc.Projectile;
 import es.pac.games.robowar.screens.GameScreen;
 
 public class Enemy {
-
+		
 	private int power, centerX, speedX, centerY;
 	private Background bg = GameScreen.getBg1();
 	private Robot robot = GameScreen.getRobot();
@@ -17,8 +18,10 @@ public class Enemy {
 	public int health = 5;
 
 	private int movementSpeed;
-	
+
 	protected ArrayList<Projectile> projectiles = new ArrayList<Projectile>();
+	protected boolean readyToAtack = true;
+	protected boolean isShooter = false;
 
 	// Behavioral Methods
 	public void update() {
@@ -28,8 +31,8 @@ public class Enemy {
 		r.set(centerX - 25, centerY - 25, centerX + 25, centerY + 35);
 
 		if (Rect.intersects(r, Robot.yellowRed)) {
-			checkCollision();
-		}
+			checkCollision();			
+		}				
 
 	}
 
@@ -63,12 +66,16 @@ public class Enemy {
 	}
 
 	public void die() {
-
 	}
 
-	public void attack() {
+	public void attack() {		
 
 	}
+	
+	public void paintProjectil(Graphics g) {
+		
+	}		
+	
 
 	public int getPower() {
 		return power;
@@ -109,5 +116,31 @@ public class Enemy {
 	public void setBg(Background bg) {
 		this.bg = bg;
 	}
+
+	public boolean isReadyToAtack() {
+		return readyToAtack;
+	}
+
+	public void setReadyToAtack(boolean readyToAtack) {
+		this.readyToAtack = readyToAtack;
+	}
+
+	public boolean isShooter() {
+		return isShooter;
+	}
+
+	public void setShooter(boolean isShooter) {
+		this.isShooter = isShooter;
+	}
+
+	public ArrayList<Projectile> getProjectiles() {
+		return projectiles;
+	}
+
+	public void setProjectiles(ArrayList<Projectile> projectiles) {
+		this.projectiles = projectiles;
+	}
+
+	
 
 }

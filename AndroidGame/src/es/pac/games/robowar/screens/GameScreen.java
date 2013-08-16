@@ -26,7 +26,7 @@ import es.pac.games.robowar.misc.Tile;
 
 public class GameScreen extends Screen {
 
-	private static final int MAX_ENEMIES = 4;
+	private static final int MAX_ENEMIES = 2;
 	private static final int ENEMY_TYPE_NUMBER = 3;
 
 	enum GameState {
@@ -397,6 +397,11 @@ public class GameScreen extends Screen {
 			Projectile p = (Projectile) projectiles.get(i);
 			g.drawRect(p.getX(), p.getY(), 10, 5, Color.YELLOW);
 		}
+		
+		for (Enemy enemy:enemies) {			
+			enemy.paintProjectil(g);						
+		}
+		
 		// First draw the game elements.
 
 		g.drawImage(currentSprite, robot.getCenterX() - 61,
