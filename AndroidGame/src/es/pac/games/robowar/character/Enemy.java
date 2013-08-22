@@ -8,15 +8,10 @@ import es.pac.games.robowar.Background;
 import es.pac.games.robowar.misc.Projectile;
 import es.pac.games.robowar.screens.GameScreen;
 
-public class Enemy {
+public class Enemy extends Character {
 		
-	private int power, centerX, speedX, centerY;
-	private Background bg = GameScreen.getBg1();
-	private Robot robot = GameScreen.getRobot();
-
-	public Rect r = new Rect(0, 0, 0, 0);
-	public int health = 5;
-
+	private int power;
+	private Background bg = GameScreen.getBg1();	
 	private int movementSpeed;
 
 	protected ArrayList<Projectile> projectiles = new ArrayList<Projectile>();
@@ -24,39 +19,43 @@ public class Enemy {
 	protected boolean isShooter = false;
 
 	// Behavioral Methods
-	public void update() {
-		follow();
+	public void update(Character target) {
+		follow(target);
 		centerX += speedX;
 		speedX = bg.getSpeedX() * 5 + movementSpeed;
-		r.set(centerX - 25, centerY - 25, centerX + 25, centerY + 35);
+		rect.set(centerX - 25, centerY - 25, centerX + 25, centerY + 35);
 
-		if (Rect.intersects(r, Robot.yellowRed)) {
-			checkCollision();			
-		}				
+		Robot robot = (Robot)target;
+		if (Rect.intersects(rect, robot.getYellowRed())) {
+			checkCollision(robot);			
+		}		
+		
+		attack(target);
 
 	}
 
-	private void checkCollision() {
-		if (Rect.intersects(r, Robot.rect) || Rect.intersects(r, Robot.rect2)
-				|| Rect.intersects(r, Robot.rect3)
-				|| Rect.intersects(r, Robot.rect4)) {
+	private void checkCollision(Character target) {
+		Robot robot = (Robot)target;
+		if (Rect.intersects(rect, robot.getRect()) || Rect.intersects(rect, robot.getRect2())
+				|| Rect.intersects(rect, robot.getRect3())
+				|| Rect.intersects(rect, robot.getRect4())) {
 
 		}
 	}
 
-	public void follow() {
+	public void follow(Character target) {
 
 		if (centerX < -95 || centerX > 810) {
 			movementSpeed = 0;
 		}
 
-		else if (Math.abs(robot.getCenterX() - centerX) < 5) {
+		else if (Math.abs(target.getCenterX() - centerX) < 5) {
 			movementSpeed = 0;
 		}
 
 		else {
 
-			if (robot.getCenterX() >= centerX) {
+			if (target.getCenterX() >= centerX) {
 				movementSpeed = 1;
 			} else {
 				movementSpeed = -1;
@@ -68,7 +67,7 @@ public class Enemy {
 	public void die() {
 	}
 
-	public void attack() {		
+	public void attack(Character target) {		
 
 	}
 	

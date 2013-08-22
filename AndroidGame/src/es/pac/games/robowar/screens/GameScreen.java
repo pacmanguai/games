@@ -26,7 +26,7 @@ import es.pac.games.robowar.misc.Tile;
 
 public class GameScreen extends Screen {
 
-	private static final int MAX_ENEMIES = 2;
+	private static final int MAX_ENEMIES = 1;
 	private static final int ENEMY_TYPE_NUMBER = 3;
 
 	enum GameState {
@@ -38,9 +38,9 @@ public class GameScreen extends Screen {
 	// Variable Setup
 
 	private static Background bg1, bg2;
-	private static Robot robot;
+	private Robot robot;
 
-	public static List<Enemy> enemies = new ArrayList<Enemy>();
+	public List<Enemy> enemies = new ArrayList<Enemy>();
 	
 	private Image currentSprite, character, character2, character3, heliboy,
 			heliboy2, heliboy3, heliboy4, heliboy5;
@@ -70,21 +70,7 @@ public class GameScreen extends Screen {
 		heliboy4 = Assets.heliboy4;
 		heliboy5 = Assets.heliboy5;
 
-		anim = new Animation();
-		anim.addFrame(character, 1250);
-		anim.addFrame(character2, 50);
-		anim.addFrame(character3, 50);
-		anim.addFrame(character2, 50);
-
-		hanim = new Animation();
-		hanim.addFrame(heliboy, 100);
-		hanim.addFrame(heliboy2, 100);
-		hanim.addFrame(heliboy3, 100);
-		hanim.addFrame(heliboy4, 100);
-		hanim.addFrame(heliboy5, 100);
-		hanim.addFrame(heliboy4, 100);
-		hanim.addFrame(heliboy3, 100);
-		hanim.addFrame(heliboy2, 100);
+		initializeAnimations();
 
 		currentSprite = anim.getImage();
 
@@ -103,6 +89,24 @@ public class GameScreen extends Screen {
 		paint2.setAntiAlias(true);
 		paint2.setColor(Color.WHITE);
 
+	}
+
+	private void initializeAnimations() {
+		anim = new Animation();
+		anim.addFrame(character, 1250);
+		anim.addFrame(character2, 50);
+		anim.addFrame(character3, 50);
+		anim.addFrame(character2, 50);
+
+		hanim = new Animation();
+		hanim.addFrame(heliboy, 100);
+		hanim.addFrame(heliboy2, 100);
+		hanim.addFrame(heliboy3, 100);
+		hanim.addFrame(heliboy4, 100);
+		hanim.addFrame(heliboy5, 100);
+		hanim.addFrame(heliboy4, 100);
+		hanim.addFrame(heliboy3, 100);
+		hanim.addFrame(heliboy2, 100);
 	}
 
 	private void loadMap() {
@@ -263,8 +267,8 @@ public class GameScreen extends Screen {
 		ArrayList projectiles = robot.getProjectiles();
 		for (int i = 0; i < projectiles.size(); i++) {
 			Projectile p = (Projectile) projectiles.get(i);
-			if (p.isVisible() == true) {
-				p.update();
+			if (p.isVisible() == true) {		
+				p.update(enemies);				
 			} else {
 				projectiles.remove(i);
 			}
@@ -289,12 +293,12 @@ public class GameScreen extends Screen {
 			// Generate randonly a enemy
 			Enemy enemy = getRandomEnemy();
 			if (enemy!=null) {
-				this.enemies.add(enemy);
+				enemies.add(enemy);
 			}
 
 		}
 		for (Enemy enemy:enemies) {
-			enemy.update();
+			enemy.update(robot);
 		}
 
 	}
@@ -302,7 +306,7 @@ public class GameScreen extends Screen {
 	private Enemy getRandomEnemy() {
 
 		Enemy randomEnemy = null;
-		int type =  getRandomValue(ENEMY_TYPE_NUMBER + 1);
+		int type =  getRandomValue(ENEMY_TYPE_NUMBER + 100);
 				
 		int centerX = getRandomValue(700);
 		int centerY = getRandomValue(380);
@@ -379,7 +383,7 @@ public class GameScreen extends Screen {
 
 		for (int i = 0; i < tilearray.size(); i++) {
 			Tile t = (Tile) tilearray.get(i);
-			t.update();
+			t.update(robot);
 		}
 
 	}
@@ -547,8 +551,7 @@ public class GameScreen extends Screen {
 		return bg2;
 	}
 
-	public static Robot getRobot() {
-		// TODO Auto-generated method stub
+	public Robot getRobot() {	
 		return robot;
 	}
 }
